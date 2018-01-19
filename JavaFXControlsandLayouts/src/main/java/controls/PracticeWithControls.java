@@ -31,7 +31,7 @@ import java.util.Scanner;
 public class PracticeWithControls extends Application {
     
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setScene(createDialogs());
+        primaryStage.setScene(createOptionalElements());
         primaryStage.setTitle("Practicing with Controls");
         primaryStage.show();
     }
