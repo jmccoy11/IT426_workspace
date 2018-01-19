@@ -24,7 +24,7 @@ public class PracticeWithLayouts extends Application{
     
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Practicing with Layouts");
-        primaryStage.setScene(useBorderPane());
+        primaryStage.setScene(useGridPane());
         primaryStage.show();
     }
     
