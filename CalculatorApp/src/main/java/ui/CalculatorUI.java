@@ -16,10 +16,16 @@ import java.util.LinkedList;
 
 public class CalculatorUI extends Application{
     
+    //For part #2 where we will be adding click listeners
     private static ArrayList<Label> buttons = new ArrayList<>();
     
+    /**
+     * Entry point for the program.
+     *
+     * @param primaryStage - Stage - Main screen
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         setWindowProperties(primaryStage);
         primaryStage.show();
     }
