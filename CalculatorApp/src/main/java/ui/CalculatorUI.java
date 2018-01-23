@@ -1,10 +1,22 @@
+/*
+ * Jonnathon McCoy
+ * 01/20/2018
+ * CalculatorUI.java
+ *
+ * This class sets up the User Interface for the Calculator App
+ *
+ * Many of the Clean Code principles were used in the creation of this project
+ * to help reinforce the topics discussed in Clean Code Chapters 1-4. It is
+ * quite possible I may be misunderstanding and misusing some of these principles
+ * but I am trying.
+ */
+
 package ui;
 
 import constants.CalculatorProperties;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -14,6 +26,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
+/**
+ * This class sets up the User Interface for the Calculator App
+ *
+ * @author Jonnathon McCoy
+ * @version 1.0
+ */
 public class CalculatorUI extends Application{
     
     //For part #2 where we will be adding click listeners
@@ -81,12 +99,15 @@ public class CalculatorUI extends Application{
             for(int column = 0; column < CalculatorProperties.BUTTON_MAP[row].length; column++) {
                 HBox buttonLayout = new HBox();
                 setButtonLayoutProperties(buttonLayout);
-            
+                
+                // Each button is created from the the 2D BUTTON_MAP array
                 Label button = new Label(CalculatorProperties.BUTTON_MAP[row][column]);
                 button.setAlignment(Pos.CENTER);
             
                 buttonLayout.getChildren().add(button);
             
+                //Conditionals to account for Enter being twice the size as a normal button and the "/" button needing
+                //to be placed in the last column.
                 if (button.getText().equals("Enter")) {
                     button.setPrefWidth((CalculatorProperties.ButtonProperties.BUTTON_WIDTH +
                             CalculatorProperties.BUTTON_GAP)*2);
@@ -102,6 +123,7 @@ public class CalculatorUI extends Application{
         }
     }
     
+    // The output display changes when buttons are pressed and will display the results of an arithmetic function
     private void createOutputDisplay(GridPane buttonGrid) {
         HBox outputDisplay = new HBox();
         setOutputDisplayProperties(outputDisplay);

@@ -1,9 +1,30 @@
+/*
+ * Jonnathon McCoy
+ * 01/20/2018
+ * CalculatorProperties.java
+ *
+ * This class holds the variables for the CalculatorUI to prevent magic numbers
+ * and to prevent cluttering the UI class.
+ *
+ * Many of the Clean Code principles were used in the creation of this project
+ * to help reinforce the topics discussed in Clean Code Chapters 1-4. It is
+ * quite possible I may be misunderstanding and misusing some of these principles
+ * but I am trying.
+ */
+
 package constants;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+/**
+ * This class holds the variables for the CalculatorUI to prevent magic numbers
+ * and to prevent cluttering the UI class.
+ *
+ * @author Jonnathon McCoy
+ * @version 1.0
+ */
 public class CalculatorProperties {
     public static final int SIDE_PADDING_INSETS = 20;
     public static final int APP_MIN_WIDTH = 300;
@@ -21,6 +42,15 @@ public class CalculatorProperties {
             {"0", "Enter", "/"}
     };
     
+    /**
+     * This inner class is intended to be called through the Calculator Properties.
+     *
+     * This class holds the variables for the Calculator Buttons to prevent magic
+     * numbers and to prevent cluttering the Calculator UI class.
+     *
+     * @author Jonnathon McCoy
+     * @version 1.0
+     */
     public static class ButtonProperties {
         private static final Color BACKGROUND_COLOR = Color.gray(0.9);
         private static final Color BORDER_COLOR = Color.gray(0.3);
@@ -35,6 +65,15 @@ public class CalculatorProperties {
                    BorderStrokeStyle.SOLID, CORNER_RADII, BORDER_WIDTHS));
     }
     
+    /**
+     * This inner class is intended to be called through the Calculator Properties.
+     *
+     * This class holds the variables for the Calculator Output Display to prevent magic
+     * numbers and to prevent cluttering the Calculator UI class.
+     *
+     * @author Jonnathon McCoy
+     * @version 1.0
+     */
     public static class OutputDisplayProperties {
         private static final Color BACKGROUND_COLOR = Color.WHITE;
         private static final Color BORDER_COLOR = Color.gray(0.3);
