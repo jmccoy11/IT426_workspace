@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f08b28e8-4816-4e08-a248-4624f675b7e6" name="Default" comment="">
+    <list default="true" id="f08b28e8-4816-4e08-a248-4624f675b7e6" name="Default" comment="Completed Comments.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/calculator/Calculator.java" afterPath="$PROJECT_DIR$/src/main/java/calculator/Calculator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/constants/CalculatorProperties.java" afterPath="$PROJECT_DIR$/src/main/java/constants/CalculatorProperties.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/launch/Launcher.java" afterPath="$PROJECT_DIR$/src/main/java/launch/Launcher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ui/CalculatorUI.java" afterPath="$PROJECT_DIR$/src/main/java/ui/CalculatorUI.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -34,7 +30,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Calculator.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Calculator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/calculator/Calculator.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="378">
@@ -61,14 +57,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CalculatorUI.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CalculatorUI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ui/CalculatorUI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="11" selection-end-column="3" />
+              <caret line="24" column="27" lean-forward="true" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
               <folding>
                 <element signature="e#0#6715#0" expanded="true" />
-                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -365,7 +360,7 @@
       <workItem from="1516305638234" duration="15847000" />
       <workItem from="1516330618144" duration="7579000" />
       <workItem from="1516653445815" duration="766000" />
-      <workItem from="1516740360012" duration="2396000" />
+      <workItem from="1516740360012" duration="3112000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1516328397916</created>
@@ -388,11 +383,18 @@
       <option name="project" value="LOCAL" />
       <updated>1516741206166</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Completed Comments.">
+      <created>1516742784335</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1516742784335</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26610000" />
+    <option name="totallyTimeSpent" value="27326000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -437,7 +439,8 @@
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Moved Constants to their own class" />
     <MESSAGE value="Adding Comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding Comments" />
+    <MESSAGE value="Completed Comments." />
+    <option name="LAST_COMMIT_MESSAGE" value="Completed Comments." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -492,7 +495,6 @@
           <caret line="79" column="48" lean-forward="true" selection-start-line="79" selection-start-column="48" selection-end-line="79" selection-end-column="48" />
           <folding>
             <element signature="e#0#6715#0" expanded="true" />
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -545,7 +547,6 @@
           <caret line="74" column="97" lean-forward="false" selection-start-line="74" selection-start-column="97" selection-end-line="74" selection-end-column="97" />
           <folding>
             <element signature="e#0#6715#0" expanded="true" />
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -587,7 +588,6 @@
           <caret line="92" column="32" lean-forward="false" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
           <folding>
             <element signature="e#0#6715#0" expanded="true" />
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -631,17 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ui/CalculatorUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="11" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#6715#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="462">
@@ -656,6 +645,16 @@
           <caret line="18" column="51" lean-forward="true" selection-start-line="18" selection-start-column="51" selection-end-line="18" selection-end-column="51" />
           <folding>
             <element signature="e#0#719#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ui/CalculatorUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="24" column="27" lean-forward="true" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#6715#0" expanded="true" />
           </folding>
         </state>
       </provider>
