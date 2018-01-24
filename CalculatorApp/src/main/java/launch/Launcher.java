@@ -1,7 +1,7 @@
 /*
  * Jonnathon McCoy
  * 01/20/2018
- * CalculatorProperties.java
+ * Launcher.java
  *
  * This class contains the code to launch the Calculator App.
  *

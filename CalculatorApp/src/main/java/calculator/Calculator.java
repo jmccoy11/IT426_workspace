@@ -1,7 +1,7 @@
 /*
  * Jonnathon McCoy
  * 01/20/2018
- * CalculatorUI.java
+ * Calculator.java
  *
  * This class will contain the MVC for the Calculator App. It will also be responsible for
  * the arithmetic operations for the CalculatorApp.
