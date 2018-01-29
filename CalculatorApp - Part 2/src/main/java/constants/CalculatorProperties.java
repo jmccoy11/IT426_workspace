@@ -32,16 +32,9 @@ public class CalculatorProperties {
     public static final int APP_MAX_WIDTH = 600;
     public static final int APP_MAX_HEIGHT = 800;
     public static final int COLUMN_CONSTRAINT_WIDTH_PERCENT = 25;
+    public static final double ELEMENT_SPACING = 10;
     public static final int BUTTON_GAP = 10;
     public static final int BUTTON_GRID_COLUMNS = 4;
-    public static final int ENTER_BTN_COLSPAN = 2;
-    public static final String[][] BUTTON_MAP = new String[][]{
-            {"7", "8", "9", "+"},
-            {"4", "5", "6", "-"},
-            {"1", "2", "3", "*"},
-            {"0", "Enter", "/"},
-            {"Enter", "Bugoo", "Enter"}
-    };
     
     /**
      * This inner class is intended to be called through the Calculator Properties.
@@ -64,6 +57,10 @@ public class CalculatorProperties {
                 BACKGROUND_COLOR, CORNER_RADII, Insets.EMPTY));
         public static final Border BUTTON_BORDER = new Border(new BorderStroke(BORDER_COLOR,
                    BorderStrokeStyle.SOLID, CORNER_RADII, BORDER_WIDTHS));
+        
+        public static final int ENTER_BTN_COLSPAN = 2;
+        public static final int CLEAR_EVERYTHING_COL_INDEX = 3;
+        public static final int CLEAR_COL_INDEX = 2;
     }
     
     /**

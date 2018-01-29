@@ -13,7 +13,14 @@
 
 package ui;
 
+import buttons.CalculatorButton;
+import buttons.OperandButton;
+import buttons.OperatorButton;
+import buttons.ToolButton;
 import constants.CalculatorProperties;
+import controller.CalculatorController;
+import enums.ButtonType;
+import enums.FunctionType;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,7 +29,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -33,9 +39,31 @@ import java.util.LinkedList;
  * @version 1.0
  */
 public class CalculatorUI extends Application{
+    private CalculatorController controller;
+    private HBox outputDisplay;
+    private static Label outputDisplayText;
+    private GridPane buttonGrid;
     
-    //For part #2 where we will be adding click listeners
-    private static ArrayList<Label> buttons = new ArrayList<>();
+    private final Object[][][] BUTTON_DATA = new Object[][][]{
+            {
+                {"C", ButtonType.TOOL}, {"CE", ButtonType.TOOL}
+            },
+            {
+                {"7", ButtonType.OPERATOR}, {"8", ButtonType.OPERATOR}, {"9", ButtonType.OPERATOR},
+                    {"+", ButtonType.OPERAND}
+            },
+            {
+                {"4", ButtonType.OPERATOR}, {"5", ButtonType.OPERATOR}, {"6", ButtonType.OPERATOR},
+                    {"-", ButtonType.OPERAND}
+            },
+            {
+                {"1", ButtonType.OPERATOR}, {"2", ButtonType.OPERATOR}, {"3", ButtonType.OPERATOR},
+                    {"*", ButtonType.OPERAND}
+            },
+            {
+                {"0", ButtonType.OPERATOR}, {"Enter", ButtonType.TOOL}, {"/", ButtonType.OPERAND}
+            }
+    };
     
     /**
      * Entry point for the program.
@@ -44,8 +72,18 @@ public class CalculatorUI extends Application{
      */
     @Override
     public void start(Stage primaryStage) {
+        controller = new CalculatorController();
         setWindowProperties(primaryStage);
+        controller.setListeners();
         primaryStage.show();
+    }
+    
+    public static String getOutputDisplayText() {
+        return outputDisplayText.getText();
+    }
+    
+    public static void setOutputDisplayText(String newText) {
+        outputDisplayText.setText(newText);
     }
     
     private void setWindowProperties(Stage appWindow) {
@@ -63,7 +101,13 @@ public class CalculatorUI extends Application{
     
     private Scene createCalculatorLayout() {
         VBox appLayout = createAppLayout();
-        appLayout.getChildren().add(createButtonLayout());
+        appLayout.setSpacing(CalculatorProperties.ELEMENT_SPACING);
+        
+        createButtonLayout();
+        appLayout.getChildren().add(buttonGrid);
+        
+        createOutputDisplay();
+        appLayout.getChildren().add(outputDisplay);
         
         return new Scene(appLayout, CalculatorProperties.APP_MIN_WIDTH, CalculatorProperties.APP_MIN_HEIGHT);
     }
@@ -75,67 +119,99 @@ public class CalculatorUI extends Application{
         return appLayout;
     }
     
-    private GridPane createButtonLayout() {
-        GridPane buttonGrid = new GridPane();
-        setButtonLayoutProperties(buttonGrid);
-        addButtons(buttonGrid);
-        return buttonGrid;
+    private void createButtonLayout() {
+        buttonGrid = new GridPane();
+        setButtonLayoutProperties();
+        createButtonsGrid();
     }
     
-    private void setButtonLayoutProperties(GridPane buttonGrid) {
+    private void setButtonLayoutProperties() {
         buttonGrid.setAlignment(Pos.CENTER);
         buttonGrid.setVgap(CalculatorProperties.BUTTON_GAP);
         buttonGrid.setHgap(CalculatorProperties.BUTTON_GAP);
         buttonGrid.getColumnConstraints().addAll(createButtonLayoutColumnConstraints());
     }
     
-    private void addButtons(GridPane buttonGrid) {
-        createButtons(buttonGrid);
-        createOutputDisplay(buttonGrid);
-    }
-    
-    private void createButtons(GridPane buttonGrid) {
-        for(int row = 0; row < CalculatorProperties.BUTTON_MAP.length; row++) {
-            for(int column = 0; column < CalculatorProperties.BUTTON_MAP[row].length; column++) {
-                HBox buttonLayout = new HBox();
-                setButtonLayoutProperties(buttonLayout);
+    private void createButtonsGrid() {
+        for(int row = 0; row < BUTTON_DATA.length; row++) {
+            for(int column = 0; column < BUTTON_DATA[row].length; column++) {
+                String buttonValue = (String) BUTTON_DATA[row][column][0];
+                ButtonType buttonType = (ButtonType) BUTTON_DATA[row][column][1];
                 
-                // Each button is created from the the 2D BUTTON_MAP array
-                Label button = new Label(CalculatorProperties.BUTTON_MAP[row][column]);
-                button.setAlignment(Pos.CENTER);
-            
-                buttonLayout.getChildren().add(button);
-            
-                //Conditionals to account for Enter being twice the size as a normal button and the "/" button needing
-                //to be placed in the last column.
-                if (button.getText().equals("Enter")) {
-                    button.setPrefWidth((CalculatorProperties.ButtonProperties.BUTTON_WIDTH +
-                            CalculatorProperties.BUTTON_GAP)*2);
-                    buttonGrid.add(buttonLayout, column, row, CalculatorProperties.ENTER_BTN_COLSPAN, 1);
-                } else if (button.getText().equals("/")) {
-                    buttonGrid.add(buttonLayout, column+1, row);
-                } else {
-                    buttonGrid.add(buttonLayout, column, row);
-                }
-            
-                buttons.add(button);
+                CalculatorButton button = createButton(buttonValue, buttonType);
+                
+                placeButton(button, row, column);
+                
+                controller.addButton(button);
             }
         }
     }
     
-    // The output display changes when buttons are pressed and will display the results of an arithmetic function
-    private void createOutputDisplay(GridPane buttonGrid) {
-        HBox outputDisplay = new HBox();
-        setOutputDisplayProperties(outputDisplay);
+    private CalculatorButton createButton(String buttonValue, ButtonType buttonType) {
+        CalculatorButton button = evaluateAndCreateButtonType(buttonValue, buttonType);
+        button.setButtonLayout(createButtonVisual(buttonValue));
+        button.setButtonText(buttonValue);
+        
+        return button;
+    }
     
-        Label outputDisplayText = new Label("Output");
+    private CalculatorButton evaluateAndCreateButtonType(String buttonValue, ButtonType buttonType) {
+        CalculatorButton button = null;
+    
+        if (buttonType.equals(ButtonType.TOOL)) {
+            button = new ToolButton(buttonValue, controller.getFunctionType(buttonValue));
+        } else if (buttonType.equals(ButtonType.OPERAND)) {
+            button = new OperandButton(buttonValue, controller.getFunctionType(buttonValue));
+        } else {
+            button = new OperatorButton(buttonValue, Integer.valueOf(buttonValue));
+        }
+        
+        return button;
+    }
+    
+    
+    private HBox createButtonVisual(String buttonLabel) {
+        HBox buttonLayout = new HBox();
+        setButtonLayoutProperties(buttonLayout);
+        
+        // Each button is created from the the 2D BUTTON_MAP array
+        Label button = new Label(buttonLabel);
+        button.setAlignment(Pos.CENTER);
+        
+        buttonLayout.getChildren().add(button);
+        
+        return buttonLayout;
+    }
+    
+    private void placeButton(CalculatorButton button, int row, int column) {
+        //Conditionals to account for Enter being twice the size as a normal button and the "/" button needing
+        //to be placed in the last column.
+        if (button.getFunctionType().equals(FunctionType.ENTER)) {
+            button.getButtonText().setPrefWidth((CalculatorProperties.ButtonProperties.BUTTON_WIDTH +
+                    CalculatorProperties.BUTTON_GAP)*2);
+            buttonGrid.add(button.getButtonLayout(), column, row,
+                    CalculatorProperties.ButtonProperties.ENTER_BTN_COLSPAN, 1);
+        } else if (button.getFunctionType().equals(FunctionType.CLEAR)) {
+            buttonGrid.add(button.getButtonLayout(), CalculatorProperties.ButtonProperties.CLEAR_COL_INDEX, row);
+        } else if (button.getFunctionType().equals(FunctionType.CLEAR_EVERYTHING)) {
+            buttonGrid.add(button.getButtonLayout(), CalculatorProperties.ButtonProperties.CLEAR_EVERYTHING_COL_INDEX,
+                    row);
+        } else if (button.getFunctionType().equals(FunctionType.DIVIDE)) {
+            buttonGrid.add(button.getButtonLayout(), column + 1, row);
+        } else {
+            buttonGrid.add(button.getButtonLayout(), column, row);
+        }
+    }
+    
+    // The output display changes when buttons are pressed and will display the results of an arithmetic function
+    private void createOutputDisplay() {
+        outputDisplay = new HBox();
+        setOutputDisplayProperties();
+    
+        outputDisplayText = new Label("0");
         outputDisplayText.setAlignment(Pos.CENTER_RIGHT);
     
         outputDisplay.getChildren().add(outputDisplayText);
-    
-        buttonGrid.add(outputDisplay,
-                0, CalculatorProperties.OutputDisplayProperties.OUTPUT_DISPLAY_ROW_INDEX,
-                CalculatorProperties.OutputDisplayProperties.OUTPUT_DISPLAY_COL_SPAN, 1);
     }
     
     private void setButtonLayoutProperties(HBox buttonLayout) {
@@ -146,7 +222,7 @@ public class CalculatorUI extends Application{
         buttonLayout.setBorder(CalculatorProperties.ButtonProperties.BUTTON_BORDER);
     }
     
-    private void setOutputDisplayProperties(HBox outputDisplay) {
+    private void setOutputDisplayProperties() {
         outputDisplay.setBackground(CalculatorProperties.OutputDisplayProperties.OUTPUT_DISPLAY_BACKGROUND);
         outputDisplay.setPrefHeight(CalculatorProperties.OutputDisplayProperties.OUTPUT_DISPLAY_HEIGHT);
         outputDisplay.setAlignment(Pos.CENTER_RIGHT);
