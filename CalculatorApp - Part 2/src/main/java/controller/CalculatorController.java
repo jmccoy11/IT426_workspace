@@ -11,6 +11,8 @@ import ui.CalculatorUI;
 import java.util.HashMap;
 
 public class CalculatorController {
+    private final boolean DEBUG_MODE = true;
+    
     private Calculator arithmeticModel;
     private HashMap<String, FunctionType> functionsHashMap = new HashMap<>();
     private HashMap<String, CalculatorButton> buttonHashMap = new HashMap<>();
@@ -39,23 +41,22 @@ public class CalculatorController {
                 
                 @Override
                 public void handle(MouseEvent event) {
-                    System.out.println("Button Pressed: " + button.getValueAsString() + " FunctionType: " +
-                        button.getFunctionType());
-    
-                    if (button.getButtonType().equals(ButtonType.OPERATOR)) {
-                        arithmeticModel.evaluateOperator(button.getValueAsString());
-                        CalculatorUI.setOutputDisplayText(arithmeticModel.getDisplayInput());
-                    } else if (button.getButtonType().equals(ButtonType.OPERAND)) {
-                        arithmeticModel.evaluateOperand(button.getFunction());
-                        CalculatorUI.setOutputDisplayText(arithmeticModel.getDisplayInput());
-                        arithmeticModel.resetDisplayInput();
-                    } else if (button.getButtonType().equals(ButtonType.TOOL)) {
-                        arithmeticModel.evaluateTool(button.getFunctionType());
-                        CalculatorUI.setOutputDisplayText(arithmeticModel.getDisplayInput());
-                        arithmeticModel.resetDisplayInput();
+                    if (DEBUG_MODE) {
+                        System.out.println("Button Pressed: " + button.getValueAsString() + " FunctionType: " +
+                                button.getFunctionType());
+                        System.out.println(arithmeticModel.toString());
                     }
     
-                    System.out.println(arithmeticModel.toString());
+                    if (isOperator(button)) {
+                        arithmeticModel.evaluateOperator(button.getValueAsString());
+                        updateDisplayOutput();
+                    } else if (isOperand(button)) {
+                        arithmeticModel.evaluateOperand(button.getFunction());
+                        updateAndResetDisplayOutput();
+                    } else if (isTool(button)) {
+                        arithmeticModel.evaluateTool(button.getFunctionType());
+                        updateAndResetDisplayOutput();
+                    }
                 }
             });
         }
@@ -63,5 +64,26 @@ public class CalculatorController {
     
     public FunctionType getFunctionType(String buttonValue) {
         return functionsHashMap.get(buttonValue);
+    }
+    
+    private boolean isOperator(CalculatorButton button) {
+        return button.getButtonType().equals(ButtonType.OPERATOR);
+    }
+    
+    private boolean isOperand(CalculatorButton button) {
+        return button.getButtonType().equals(ButtonType.OPERAND);
+    }
+    
+    private boolean isTool(CalculatorButton button) {
+        return button.getButtonType().equals(ButtonType.TOOL);
+    }
+    
+    private void updateDisplayOutput() {
+        CalculatorUI.setOutputDisplayText(arithmeticModel.getDisplayOutput());
+    }
+    
+    private void updateAndResetDisplayOutput() {
+        CalculatorUI.setOutputDisplayText(arithmeticModel.getDisplayOutput());
+        arithmeticModel.resetDisplayOutput();
     }
 }

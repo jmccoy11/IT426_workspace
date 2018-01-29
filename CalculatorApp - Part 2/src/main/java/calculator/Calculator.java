@@ -29,51 +29,57 @@ public class Calculator {
     
     private static final int BASE_TEN = 10;
     
-    private String displayInput;
+    private String displayOutput;
     private Integer firstOperator;
     private Integer secondOperator;
     private EvaluateExpression operand;
     private Integer result;
     
     public Calculator() {
-        displayInput = "0";
+        displayOutput = "0";
         firstOperator = 0;
         secondOperator = 0;
         operand = null;
         result = 0;
     }
     
-    public String getDisplayInput() {
-        return displayInput;
+    public String getDisplayOutput() {
+        return displayOutput;
     }
     
-    private void setDisplayInput(String input) {
-        if (displayInput.equals("0")) {
-            displayInput = input;
+    public void evaluateOperator(String input) {
+        updateDisplayOutput(Integer.valueOf(input));
+        result = Integer.valueOf(displayOutput);
+    }
+    
+    private void updateDisplayOutput(Integer value) {
+        setFirstOrSecondOperator(value);
+        setDisplayOutput(value.toString());
+    }
+    
+    private void setFirstOrSecondOperator(Integer operator) {
+        if (operationHasBeenPerformed()) {
+            secondOperator = Integer.valueOf(displayOutput) * BASE_TEN + operator;
         } else {
-            displayInput += input;
+            firstOperator = Integer.valueOf(displayOutput) * BASE_TEN + operator;
         }
     }
     
-    private void updateDisplayInput(Integer operator) {
-        if (operand != null) { //An operation has been performed and firstOperator is result
-            secondOperator = Integer.valueOf(displayInput) * BASE_TEN + operator;
-        } else {
-            firstOperator = Integer.valueOf(displayInput) * BASE_TEN + operator;
-        }
-        
-        setDisplayInput(operator.toString());
-    
-        result = Integer.valueOf(displayInput);
+    private boolean operationHasBeenPerformed() {
+        return operand != null;
     }
     
-    public void resetDisplayInput() {
-        displayInput = "0";
+    private void setDisplayOutput(String input) {
+        if (displayOutput.equals("0")) {
+            displayOutput = input;
+        } else {
+            displayOutput += input;
+        }
+    }
+    
+    public void resetDisplayOutput() {
+        displayOutput = "0";
         secondOperator = 0;
-    }
-    
-    public void evaluateOperator(String value) {
-        updateDisplayInput(Integer.valueOf(value));
     }
     
     public void evaluateTool(FunctionType functionType) {
@@ -87,26 +93,27 @@ public class Calculator {
     }
     
     public void evaluateOperand(EvaluateExpression function) {
-        displayInput = "0";
-        
-        if (operand == null) {
-            operand = function;
-        } else {
-            operand = function;
-            if (secondOperator != 0) {
-                result = operand.evaluateExpression(firstOperator, secondOperator);
-                firstOperator = result;
-                displayInput = result.toString();
-            } else {
-                operand = function;
-            }
+        displayOutput = "0";
+        operand = function;
+        if (expressionComplete()) {
+            evaluateExpression();
         }
+    }
+    
+    private boolean expressionComplete() {
+        return secondOperator != 0;
+    }
+    
+    private void evaluateExpression() {
+        result = operand.evaluateExpression(firstOperator, secondOperator);
+        firstOperator = result;
+        displayOutput = result.toString();
     }
     
     @Override
     public String toString() {
         return "Calculator{" +
-                "displayInput='" + displayInput + '\'' +
+                "displayOutput='" + displayOutput + '\'' +
                 ", firstOperator=" + firstOperator +
                 ", secondOperator=" + secondOperator +
                 ", operand=" + operand +
@@ -115,16 +122,16 @@ public class Calculator {
     }
     
     private void clearLastInput() {
-        if (secondOperator != 0) {
+        if (expressionComplete()) {
             secondOperator = 0;
         } else {
             firstOperator = 0;
         }
-        resetDisplayInput();
+        resetDisplayOutput();
     }
     
     private void clearEverything() {
-        displayInput = "0";
+        displayOutput = "0";
         firstOperator = 0;
         secondOperator = 0;
         operand = null;

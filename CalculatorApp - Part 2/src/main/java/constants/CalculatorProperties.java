@@ -28,7 +28,7 @@ import javafx.scene.paint.Color;
 public class CalculatorProperties {
     public static final int SIDE_PADDING_INSETS = 20;
     public static final int APP_MIN_WIDTH = 300;
-    public static final int APP_MIN_HEIGHT = 400;
+    public static final int APP_MIN_HEIGHT = 475;
     public static final int APP_MAX_WIDTH = 600;
     public static final int APP_MAX_HEIGHT = 800;
     public static final int COLUMN_CONSTRAINT_WIDTH_PERCENT = 25;

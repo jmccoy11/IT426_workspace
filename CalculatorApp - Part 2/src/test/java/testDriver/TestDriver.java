@@ -1,36 +1,34 @@
 package testDriver;
 
 import calculator.Calculator;
-import enums.ButtonType;
 import enums.FunctionType;
 import functions.*;
 import interfaces.EvaluateExpression;
 
 public class TestDriver {
     
-    private static Calculator model;
-    
     public static void main(String[] args) {
+        Calculator model = new Calculator();
+        
         System.out.println("--------Testing Constructor--------");
         System.out.println("Testing the Model Constructor: ");
-        model = new Calculator();
         System.out.println(model.toString());
         
         System.out.println();
         System.out.println("--------Testing Operators--------");
         System.out.println("Entering 1 as input: ");
         model.evaluateOperator("1");
-        System.out.println("Expected: 1 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 1 | Actual: " + model.getDisplayOutput());
     
         System.out.println("Entering 2 as input: ");
         model.evaluateOperator("2");
-        System.out.println("Expected: 12 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 12 | Actual: " + model.getDisplayOutput());
         model.evaluateTool(FunctionType.CLEAR_EVERYTHING);
     
         System.out.println("Testing for when input is already in firstOperator: ");
         model.evaluateOperand(new Add());
         model.evaluateOperator("1");
-        System.out.println("Expected: 13 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 13 | Actual: " + model.getDisplayOutput());
         model.evaluateTool(FunctionType.CLEAR_EVERYTHING);
         
         System.out.println();
@@ -79,14 +77,14 @@ public class TestDriver {
         System.out.println(model.toString());
         System.out.println("Pressing Add:");
         model.evaluateOperand(new Add());
-        System.out.println(model.toString());;
+        System.out.println(model.toString());
         System.out.println("Added 10 + 20");
-        System.out.println("Expected: 30 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 30 | Actual: " + model.getDisplayOutput());
         System.out.println();
         
         System.out.println("Adding 10");
         //Controller should reset the display after any other button is pressed except enter
-        model.resetDisplayInput();
+        model.resetDisplayOutput();
         model.evaluateOperator("1");
         System.out.println(model.toString());
         model.evaluateOperator("0");
@@ -95,12 +93,12 @@ public class TestDriver {
         model.evaluateOperand(new Add());
         System.out.println(model.toString());
         System.out.println("Added 30 + 10");
-        System.out.println("Expected: 40 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 40 | Actual: " + model.getDisplayOutput());
         System.out.println();
     
         System.out.println("Adding 20");
         //Controller should reset the display after any other button is pressed except enter
-        model.resetDisplayInput();
+        model.resetDisplayOutput();
         model.evaluateOperator("2");
         System.out.println(model.toString());
         model.evaluateOperator("0");
@@ -109,12 +107,12 @@ public class TestDriver {
         model.evaluateTool(FunctionType.ENTER);
         System.out.println(model.toString());
         System.out.println("Added 40 + 20");
-        System.out.println("Expected: 60 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 60 | Actual: " + model.getDisplayOutput());
         System.out.println();
     
         System.out.println("Subtracting 30");
         // Controller should reset the display after any other button is pressed except enter
-        model.resetDisplayInput();
+        model.resetDisplayOutput();
         System.out.println("Pressing Subtract:");
         model.evaluateOperand(new Subtract());
         System.out.println(model.toString());
@@ -126,12 +124,12 @@ public class TestDriver {
         model.evaluateTool(FunctionType.ENTER);
         System.out.println(model.toString());
         System.out.println("Subtracted 60 - 30");
-        System.out.println("Expected: 30 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 30 | Actual: " + model.getDisplayOutput());
         System.out.println();
     
         System.out.println("Multiplying by 2");
 //        //Controller should reset the display after any other button is pressed except enter
-        model.resetDisplayInput();
+        model.resetDisplayOutput();
         System.out.println("Pressing Multiply:");
         model.evaluateOperand(new Multiply());
         System.out.println("Entering 2");
@@ -141,12 +139,12 @@ public class TestDriver {
         model.evaluateTool(FunctionType.ENTER);
         System.out.println(model.toString());
         System.out.println("Multiplied 30 * 2");
-        System.out.println("Expected: 60 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 60 | Actual: " + model.getDisplayOutput());
         System.out.println();
     
         System.out.println("Dividing by 5");
 //        //Controller should reset the display after any other button is pressed except enter
-        model.resetDisplayInput();
+        model.resetDisplayOutput();
         System.out.println("Pressing Divide:");
         model.evaluateOperand(new Divide());
         System.out.println("Entering 5");
@@ -156,12 +154,12 @@ public class TestDriver {
         model.evaluateTool(FunctionType.ENTER);
         System.out.println(model.toString());
         System.out.println("Divided 60 / 5");
-        System.out.println("Expected: 12 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 12 | Actual: " + model.getDisplayOutput());
         System.out.println();
     
         System.out.println("Dividing by 0");
 //        //Controller should reset the display after any other button is pressed except enter
-        model.resetDisplayInput();
+        model.resetDisplayOutput();
         System.out.println("Pressing Divide:");
         model.evaluateOperand(new Divide());
         System.out.println("Entering 0");
@@ -171,7 +169,7 @@ public class TestDriver {
         model.evaluateTool(FunctionType.ENTER);
         System.out.println(model.toString());
         System.out.println("Multiplied 12 / 0");
-        System.out.println("Expected: 0 | Actual: " + model.getDisplayInput());
+        System.out.println("Expected: 0 | Actual: " + model.getDisplayOutput());
         System.out.println();
     }
 }

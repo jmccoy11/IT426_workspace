@@ -27,6 +27,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Collection;
@@ -44,24 +45,25 @@ public class CalculatorUI extends Application{
     private static Label outputDisplayText;
     private GridPane buttonGrid;
     
+    private final ButtonType OPERATOR = ButtonType.OPERATOR;
+    private final ButtonType OPERAND = ButtonType.OPERAND;
+    private final ButtonType TOOL = ButtonType.TOOL;
+    
     private final Object[][][] BUTTON_DATA = new Object[][][]{
             {
-                {"C", ButtonType.TOOL}, {"CE", ButtonType.TOOL}
+                                                       {"C", TOOL}, {"CE", TOOL}
             },
             {
-                {"7", ButtonType.OPERATOR}, {"8", ButtonType.OPERATOR}, {"9", ButtonType.OPERATOR},
-                    {"+", ButtonType.OPERAND}
+                {"7", OPERATOR}, {"8", OPERATOR}, {"9", OPERATOR}, {"+", OPERAND}
             },
             {
-                {"4", ButtonType.OPERATOR}, {"5", ButtonType.OPERATOR}, {"6", ButtonType.OPERATOR},
-                    {"-", ButtonType.OPERAND}
+                {"4", OPERATOR}, {"5", OPERATOR}, {"6", OPERATOR}, {"-", OPERAND}
             },
             {
-                {"1", ButtonType.OPERATOR}, {"2", ButtonType.OPERATOR}, {"3", ButtonType.OPERATOR},
-                    {"*", ButtonType.OPERAND}
+                {"1", OPERATOR}, {"2", OPERATOR}, {"3", OPERATOR}, {"*", OPERAND}
             },
             {
-                {"0", ButtonType.OPERATOR}, {"Enter", ButtonType.TOOL}, {"/", ButtonType.OPERAND}
+                {"0", OPERATOR},         {"Enter", TOOL},          {"/", OPERAND}
             }
     };
     
@@ -76,10 +78,6 @@ public class CalculatorUI extends Application{
         setWindowProperties(primaryStage);
         controller.setListeners();
         primaryStage.show();
-    }
-    
-    public static String getOutputDisplayText() {
-        return outputDisplayText.getText();
     }
     
     public static void setOutputDisplayText(String newText) {
@@ -102,6 +100,18 @@ public class CalculatorUI extends Application{
     private Scene createCalculatorLayout() {
         VBox appLayout = createAppLayout();
         appLayout.setSpacing(CalculatorProperties.ELEMENT_SPACING);
+        
+        HBox disclaimerLayout = new HBox();
+        disclaimerLayout.setAlignment(Pos.CENTER);
+        disclaimerLayout.setPrefWidth(CalculatorProperties.APP_MIN_WIDTH);
+        
+        Label disclaimer = new Label("This Calculator currently handles only \n " +
+                "full integer arithmetic functions");
+        disclaimer.setTextFill(Color.RED);
+        disclaimer.setWrapText(true);
+        
+        disclaimerLayout.getChildren().add(disclaimer);
+        appLayout.getChildren().add(disclaimerLayout);
         
         createButtonLayout();
         appLayout.getChildren().add(buttonGrid);
@@ -156,7 +166,7 @@ public class CalculatorUI extends Application{
     }
     
     private CalculatorButton evaluateAndCreateButtonType(String buttonValue, ButtonType buttonType) {
-        CalculatorButton button = null;
+        CalculatorButton button;
     
         if (buttonType.equals(ButtonType.TOOL)) {
             button = new ToolButton(buttonValue, controller.getFunctionType(buttonValue));
@@ -174,7 +184,7 @@ public class CalculatorUI extends Application{
         HBox buttonLayout = new HBox();
         setButtonLayoutProperties(buttonLayout);
         
-        // Each button is created from the the 2D BUTTON_MAP array
+        // Each button is created from the the 3D BUTTON_DATA array
         Label button = new Label(buttonLabel);
         button.setAlignment(Pos.CENTER);
         
