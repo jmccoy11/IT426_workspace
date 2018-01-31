@@ -41,7 +41,9 @@ import java.util.LinkedList;
  */
 public class CalculatorUI extends Application{
     private CalculatorController controller;
+    private VBox appLayout;
     private HBox outputDisplay;
+    private HBox disclaimer;
     private static Label outputDisplayText;
     private GridPane buttonGrid;
     
@@ -49,6 +51,7 @@ public class CalculatorUI extends Application{
     private final ButtonType OPERAND = ButtonType.OPERAND;
     private final ButtonType TOOL = ButtonType.TOOL;
     
+    //Yes, I know this is wrong/bad but I couldn't really implement a better way to do it
     private final Object[][][] BUTTON_DATA = new Object[][][]{
             {
                                                        {"C", TOOL}, {"CE", TOOL}
@@ -80,7 +83,11 @@ public class CalculatorUI extends Application{
         primaryStage.show();
     }
     
-    public static void setOutputDisplayText(String newText) {
+    /**
+     * Sets the display text of the User Interface.
+     * @param newText - String of the new Value.
+     */
+    public static void setUIOutputDisplayText(String newText) {
         outputDisplayText.setText(newText);
     }
     
@@ -98,26 +105,8 @@ public class CalculatorUI extends Application{
     }
     
     private Scene createCalculatorLayout() {
-        VBox appLayout = createAppLayout();
-        appLayout.setSpacing(CalculatorProperties.ELEMENT_SPACING);
-        
-        HBox disclaimerLayout = new HBox();
-        disclaimerLayout.setAlignment(Pos.CENTER);
-        disclaimerLayout.setPrefWidth(CalculatorProperties.APP_MIN_WIDTH);
-        
-        Label disclaimer = new Label("This Calculator currently handles only \n " +
-                "full integer arithmetic functions");
-        disclaimer.setTextFill(Color.RED);
-        disclaimer.setWrapText(true);
-        
-        disclaimerLayout.getChildren().add(disclaimer);
-        appLayout.getChildren().add(disclaimerLayout);
-        
-        createButtonLayout();
-        appLayout.getChildren().add(buttonGrid);
-        
-        createOutputDisplay();
-        appLayout.getChildren().add(outputDisplay);
+        createLayouts();
+        addLayouts();
         
         return new Scene(appLayout, CalculatorProperties.APP_MIN_WIDTH, CalculatorProperties.APP_MIN_HEIGHT);
     }
@@ -127,6 +116,34 @@ public class CalculatorUI extends Application{
         appLayout.setAlignment(Pos.CENTER);
         appLayout.setPadding(new Insets(CalculatorProperties.SIDE_PADDING_INSETS));
         return appLayout;
+    }
+    
+    private HBox createDisclaimerLayout() {
+        HBox disclaimerLayout = new HBox();
+        disclaimerLayout.setAlignment(Pos.CENTER);
+        disclaimerLayout.setPrefWidth(CalculatorProperties.APP_MIN_WIDTH);
+    
+        Label disclaimer = new Label("This Calculator currently handles only \n " +
+                "full integer arithmetic functions");
+        disclaimer.setTextFill(Color.RED);
+        disclaimer.setWrapText(true);
+    
+        disclaimerLayout.getChildren().add(disclaimer);
+        
+        return disclaimerLayout;
+    }
+    
+    private void createLayouts() {
+        appLayout = createAppLayout();
+        appLayout.setSpacing(CalculatorProperties.ELEMENT_SPACING);
+        createButtonLayout();
+        createOutputDisplay();
+    }
+    
+    private void addLayouts() {
+        appLayout.getChildren().add(createDisclaimerLayout());
+        appLayout.getChildren().add(buttonGrid);
+        appLayout.getChildren().add(outputDisplay);
     }
     
     private void createButtonLayout() {
@@ -173,7 +190,7 @@ public class CalculatorUI extends Application{
         } else if (buttonType.equals(ButtonType.OPERAND)) {
             button = new OperandButton(buttonValue, controller.getFunctionType(buttonValue));
         } else {
-            button = new OperatorButton(buttonValue, Integer.valueOf(buttonValue));
+            button = new OperatorButton(buttonValue);
         }
         
         return button;
@@ -184,7 +201,6 @@ public class CalculatorUI extends Application{
         HBox buttonLayout = new HBox();
         setButtonLayoutProperties(buttonLayout);
         
-        // Each button is created from the the 3D BUTTON_DATA array
         Label button = new Label(buttonLabel);
         button.setAlignment(Pos.CENTER);
         
@@ -193,9 +209,11 @@ public class CalculatorUI extends Application{
         return buttonLayout;
     }
     
+    //This is messy and I don't like it...
     private void placeButton(CalculatorButton button, int row, int column) {
-        //Conditionals to account for Enter being twice the size as a normal button and the "/" button needing
-        //to be placed in the last column.
+        //Conditionals to account for "Enter" being twice the size as a normal button,
+        // the "/" button needing to be placed after a twice the size "Enter" button,
+        // and the "C" and "CE" needing to be at the top of the grid.
         if (button.getFunctionType().equals(FunctionType.ENTER)) {
             button.getButtonText().setPrefWidth((CalculatorProperties.ButtonProperties.BUTTON_WIDTH +
                     CalculatorProperties.BUTTON_GAP)*2);

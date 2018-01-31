@@ -1,12 +1,34 @@
+/*
+ * Jonnathon McCoy
+ * 01/26/2018
+ * TestDriver.java
+ *
+ * Unit Testing for the Model since I didn't have time to remember how to use JUnit.
+ *
+ * This class does NOT follow clean code principles as it's a throw away class.
+ */
+
 package testDriver;
 
 import calculator.Calculator;
 import enums.FunctionType;
 import functions.*;
-import interfaces.EvaluateExpression;
+import interfaces.EvaluateExpressionInterface;
 
+/**
+ * Unit Testing for the Model since I didn't have time to remember how to use JUnit.
+ *
+ * This class does NOT follow clean code principles as it's a throw away class.
+ *
+ * @author Jonnathon McCoy
+ * @version 1.0
+ */
 public class TestDriver {
     
+    /**
+     * Entry point for the TestDriver.
+     * @param args - Command Line arguments.
+     */
     public static void main(String[] args) {
         Calculator model = new Calculator();
         
@@ -34,7 +56,7 @@ public class TestDriver {
         System.out.println();
         System.out.println("--------Testing Operand Functions--------");
         System.out.println("Testing add function");
-        EvaluateExpression function = new Add();
+        EvaluateExpressionInterface function = new Add();
         System.out.println("Added 1 + 2");
         System.out.println("Expected: 3 | Actual: " + function.evaluateExpression(1, 2));
         System.out.println();
