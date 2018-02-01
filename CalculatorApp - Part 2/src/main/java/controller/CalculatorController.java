@@ -79,14 +79,12 @@ public class CalculatorController {
     
                     if (isOperator(button)) {
                         arithmeticModel.evaluateOperator(button.getValueAsString());
-                        updateUIDisplayOutput();
                     } else if (isOperand(button)) {
                         arithmeticModel.evaluateOperand(button.getFunction());
-                        updateAndResetUIDisplayOutput();
                     } else if (isTool(button)) {
                         arithmeticModel.evaluateTool(button.getFunctionType());
-                        updateAndResetUIDisplayOutput();
                     }
+                    updateUIDisplayOutput();
                 }
             });
         }
@@ -118,11 +116,6 @@ public class CalculatorController {
     
     private void updateUIDisplayOutput() {
         CalculatorUI.setUIOutputDisplayText(arithmeticModel.getDisplayOutput());
-    }
-    
-    private void updateAndResetUIDisplayOutput() {
-        CalculatorUI.setUIOutputDisplayText(arithmeticModel.getDisplayOutput());
-        arithmeticModel.resetDisplayOutput();
     }
     
     //For debugging purposes

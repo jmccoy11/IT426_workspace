@@ -9,7 +9,7 @@
 
 package functions;
 
-import interfaces.EvaluateExpressionInterface;
+import interfaces.Operation;
 
 /**
  * All buttons need a Function to fulfill the constructor. If there is not function
@@ -18,7 +18,7 @@ import interfaces.EvaluateExpressionInterface;
  * @author Jonnathon McCoy
  * @version 1.0
  */
-public class None implements EvaluateExpressionInterface {
+public class None implements Operation {
     
     /**
      * All buttons need a Function to fulfill the constructor. If there is not function

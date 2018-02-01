@@ -118,21 +118,6 @@ public class CalculatorUI extends Application{
         return appLayout;
     }
     
-    private HBox createDisclaimerLayout() {
-        HBox disclaimerLayout = new HBox();
-        disclaimerLayout.setAlignment(Pos.CENTER);
-        disclaimerLayout.setPrefWidth(CalculatorProperties.APP_MIN_WIDTH);
-    
-        Label disclaimer = new Label("This Calculator currently handles only \n " +
-                "full integer arithmetic functions");
-        disclaimer.setTextFill(Color.RED);
-        disclaimer.setWrapText(true);
-    
-        disclaimerLayout.getChildren().add(disclaimer);
-        
-        return disclaimerLayout;
-    }
-    
     private void createLayouts() {
         appLayout = createAppLayout();
         appLayout.setSpacing(CalculatorProperties.ELEMENT_SPACING);
@@ -144,6 +129,25 @@ public class CalculatorUI extends Application{
         appLayout.getChildren().add(createDisclaimerLayout());
         appLayout.getChildren().add(buttonGrid);
         appLayout.getChildren().add(outputDisplay);
+    }
+    
+    private HBox createDisclaimerLayout() {
+        HBox disclaimerLayout = new HBox();
+        disclaimerLayout.setAlignment(Pos.CENTER);
+        disclaimerLayout.setPrefWidth(CalculatorProperties.APP_MIN_WIDTH);
+        
+        Label disclaimer = createDisclaimerLabel();
+        disclaimerLayout.getChildren().add(disclaimer);
+        
+        return disclaimerLayout;
+    }
+    
+    private Label createDisclaimerLabel() {
+        Label disclaimer = new Label("This Calculator currently handles only \n " +
+                "full integer arithmetic functions");
+        disclaimer.setTextFill(Color.RED);
+        disclaimer.setWrapText(true);
+        return disclaimer;
     }
     
     private void createButtonLayout() {

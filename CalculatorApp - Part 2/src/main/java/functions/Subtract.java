@@ -13,20 +13,20 @@
 
 package functions;
 
-import interfaces.EvaluateExpressionInterface;
+import interfaces.Operation;
 
 /**
  * This class is the function to subtract two numbers.
  *
  * To allow this to be called, whether it's add, subtract, multiply, divide, the
- * buttons store a function grouped together by the EvaluateExpressionInterface
- * so that evaluate Expression can be called at anytime the function is retrieved
+ * buttons store a function grouped together by the Operation
+ * so that evaluate Operation can be called at anytime the function is retrieved
  * from the button.
  *
  * @author Jonnathon McCoy
  * @version 1.0
  */
-public class Subtract implements EvaluateExpressionInterface {
+public class Subtract implements Operation {
     
     /**
      * Evaluate the expression to subtract two numbers.

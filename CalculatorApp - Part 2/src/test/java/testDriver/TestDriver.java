@@ -13,7 +13,7 @@ package testDriver;
 import calculator.Calculator;
 import enums.FunctionType;
 import functions.*;
-import interfaces.EvaluateExpressionInterface;
+import interfaces.Operation;
 
 /**
  * Unit Testing for the Model since I didn't have time to remember how to use JUnit.
@@ -56,7 +56,7 @@ public class TestDriver {
         System.out.println();
         System.out.println("--------Testing Operand Functions--------");
         System.out.println("Testing add function");
-        EvaluateExpressionInterface function = new Add();
+        Operation function = new Add();
         System.out.println("Added 1 + 2");
         System.out.println("Expected: 3 | Actual: " + function.evaluateExpression(1, 2));
         System.out.println();
@@ -154,6 +154,7 @@ public class TestDriver {
         model.resetDisplayOutput();
         System.out.println("Pressing Multiply:");
         model.evaluateOperand(new Multiply());
+        System.out.println(model.toString());
         System.out.println("Entering 2");
         model.evaluateOperator("2");
         System.out.println(model.toString());
@@ -193,5 +194,31 @@ public class TestDriver {
         System.out.println("Multiplied 12 / 0");
         System.out.println("Expected: 0 | Actual: " + model.getDisplayOutput());
         System.out.println();
+    
+        System.out.println();
+        System.out.println("--------Testing Chaining Expressions--------");
+        model.evaluateTool(FunctionType.CLEAR_EVERYTHING);
+        System.out.println(model.toString());
+        System.out.println("Entering 2");
+        model.evaluateOperator("2");
+        System.out.println(model.toString());
+        System.out.println("Pressing Add");
+        model.evaluateOperand(new Add());
+        System.out.println(model.toString());
+        System.out.println("Pressing 2");
+        model.evaluateOperator("2");
+        System.out.println(model.toString());
+        System.out.println("Pressing Enter");
+        model.evaluateTool(FunctionType.ENTER);
+        System.out.println(model.toString());
+        System.out.println("Pressing Enter Again");
+        model.evaluateTool(FunctionType.ENTER);
+        System.out.println(model.toString());
+        System.out.println("Pressing Enter Again");
+        model.evaluateTool(FunctionType.ENTER);
+        System.out.println(model.toString());
+        System.out.println("Pressing Enter Again");
+        model.evaluateTool(FunctionType.ENTER);
+        System.out.println(model.toString());
     }
 }

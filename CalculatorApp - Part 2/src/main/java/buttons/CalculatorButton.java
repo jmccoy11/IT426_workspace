@@ -17,7 +17,7 @@ package buttons;
 import enums.ButtonType;
 import enums.FunctionType;
 import functions.None;
-import interfaces.EvaluateExpressionInterface;
+import interfaces.Operation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -33,7 +33,7 @@ public abstract class CalculatorButton {
     private ButtonType buttonType;
     private String valueAsString;
     private FunctionType functionType;
-    private EvaluateExpressionInterface function;
+    private Operation function;
     
     private HBox buttonLayout;
     private Label buttonText;
@@ -80,9 +80,9 @@ public abstract class CalculatorButton {
     
     /**
      * Getter for function
-     * @return function grouped by its interface, EvaluateExpressionInterface
+     * @return function grouped by its interface, Operation
      */
-    public EvaluateExpressionInterface getFunction() {
+    public Operation getFunction() {
         return function;
     }
     
@@ -93,10 +93,10 @@ public abstract class CalculatorButton {
      * Multiply, Divide) so the constructor will set it to None automatically. The constructors
      * of the other Buttons will call setFunction to insert the proper function for that
      * button.
-     * @param function - Functions are grouped by their Evaluate Expression Interface such that
+     * @param function - Functions are grouped by their Evaluate Operation Interface such that
      *                 evaluateExpression() can be called from each called function of a button.
      */
-    void setFunction(EvaluateExpressionInterface function) {
+    void setFunction(Operation function) {
         this.function = function;
     }
     

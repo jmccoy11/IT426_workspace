@@ -15,7 +15,7 @@
 package calculator;
 
 import enums.FunctionType;
-import interfaces.EvaluateExpressionInterface;
+import interfaces.Operation;
 
 /**
  * This class will contain the model for the class that will determine what variables
@@ -28,10 +28,11 @@ public class Calculator {
     
     private static final int BASE_TEN = 10;
     
+    private Integer calculatorInput;
     private String displayOutput;
     private Integer firstOperator;
     private Integer secondOperator;
-    private EvaluateExpressionInterface operand;
+    private Operation operand;
     private Integer result;
     
     /**
@@ -40,6 +41,7 @@ public class Calculator {
      * Instantiates default values.
      */
     public Calculator() {
+        calculatorInput = 0;
         displayOutput = "0";
         firstOperator = 0;
         secondOperator = 0;
@@ -54,53 +56,78 @@ public class Calculator {
     public String getDisplayOutput() {
         return displayOutput;
     }
+
+//    /**
+//     * Get result as string.
+//     * @return String representation of the result.
+//     */
+//    public String getResultAsString() {
+//        return result.toString();
+//    }
     
     /**
-     * When the Calculator receives input, evaluate the operator and update result
-     * to be the current display. That way, if Enter is pressed without an operand
-     * set, the display will update to what the result was and visa versa. This is
-     * important for evaluating chaining operations.
+     * Evaulate if the input needs to go into the first or second operator and
+     * update the display with the operator that needs to be set.
      * @param input - String value of the number that was pressed.
      */
     public void evaluateOperator(String input) {
-        updateDisplayOutput(Integer.valueOf(input));
-        result = Integer.valueOf(displayOutput);
+        calculatorInput = Integer.valueOf(input);
+        if (expressionComplete()) {
+            secondOperator = 0;
+        }
+        resetResult();
+        determineOperatorToSet();
     }
     
-    private void updateDisplayOutput(Integer value) {
-        setFirstOrSecondOperator(value);
-        setDisplayOutput(value.toString());
+    private void resetResult() {
+        result = 0;
     }
     
-    /*
-     * Check whether the input integer needs to go into the first or second operator.
-     * This is important for evaluating chaining operations.
-     */
-    private void setFirstOrSecondOperator(Integer operator) {
-        if (hasOperationBeenPerformed()) {
-            secondOperator = Integer.valueOf(displayOutput) * BASE_TEN + operator;
+    private void determineOperatorToSet() {
+        if (operand == null) {
+            updateDisplayToFirstOperator();
         } else {
-            firstOperator = Integer.valueOf(displayOutput) * BASE_TEN + operator;
+            updateDisplayToSecondOperator();
         }
     }
     
-    private boolean hasOperationBeenPerformed() {
-        return operand != null;
+    private void updateDisplayToFirstOperator() {
+        setFirstOperator();
+        setDisplayOutput(firstOperator.toString());
+    }
+    
+    private void setFirstOperator() {
+        if (firstOperator != 0) {
+            firstOperator = firstOperator * BASE_TEN + calculatorInput;
+        } else {
+            firstOperator = calculatorInput;
+        }
+    }
+    
+    private void updateDisplayToSecondOperator() {
+        setSecondOperator();
+        setDisplayOutput(secondOperator.toString());
+    }
+    
+    private void setSecondOperator() {
+        if (secondOperator != 0) {
+            secondOperator = secondOperator * BASE_TEN + calculatorInput;
+        } else {
+            secondOperator = calculatorInput;
+        }
     }
     
     private void setDisplayOutput(String input) {
-        if (displayOutput.equals("0")) {
-            displayOutput = input;
-        } else {
-            displayOutput += input;
-        }
+        displayOutput = input;
     }
     
     /**
-     * Reset the display output to "0".
+     * Reset the display Output to "0"
      */
     public void resetDisplayOutput() {
+        calculatorInput = 0;
         displayOutput = "0";
+        secondOperator = 0;
     }
     
     /**
@@ -120,25 +147,34 @@ public class Calculator {
     
     /**
      * Evaluate the the Operand that was pressed.
-     * @param function - Function grouped by EvaluateExpressionInterface so that evaluateExpression
+     * @param function - Function grouped by Operation so that evaluateExpression
      *                 can be called on the function call.
      */
-    public void evaluateOperand(EvaluateExpressionInterface function) {
+    public void evaluateOperand(Operation function) {
         displayOutput = "0";
-        operand = function;
-        if (expressionComplete()) {
+        if (operand == null) {
+            operand = function;
+        } else if (operand.equals(function)) {
+            resetResult();
             evaluateExpression();
+        } else {
+            if (result != 0) {
+                secondOperator = 0;
+                resetResult();
+            }
+            evaluateExpression();
+            operand = function;
         }
     }
     
     //If the second operator is not equal to zero, that means we are not currently in a chain
     //of operations.
     private boolean expressionComplete() {
-        return secondOperator != 0;
+        return result != 0;
     }
     
     
-    //Call evaluateExpression from EvaluateExpressionInterface and pass in the operators. The
+    //Call evaluateExpression from Operation and pass in the operators. The
     //Arithmetic Function class that is currently in operand will have the proper sequence
     //from which to perform the arithmetic.
     private void evaluateExpression() {
@@ -159,6 +195,7 @@ public class Calculator {
     
     //Reset everything to default values.
     private void clearEverything() {
+        calculatorInput = 0;
         displayOutput = "0";
         firstOperator = 0;
         secondOperator = 0;
