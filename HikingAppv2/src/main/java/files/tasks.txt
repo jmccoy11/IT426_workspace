@@ -1,0 +1,6 @@
+backpack
+food
+water
+compass
+flash light
+binoculars

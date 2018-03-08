@@ -1,0 +1,12 @@
+.main {
+    -fx-padding: 2px;
+
+    -fx-min-height: 300;
+    -fx-min-width: 400;
+    -fx-pref-height: 600;
+    -fx-pref-width: 800;
+
+    -fx-background-color: black;
+
+    -fx-font-family: "Comic Sans MS"
+}

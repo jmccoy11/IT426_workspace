@@ -1,0 +1,45 @@
+.img-label {
+    -fx-alignment: center;
+    -fx-wrap-text: true;
+    -fx-padding: 25;
+    -fx-font: 30 "Comic Sans MS";
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+
+.main-view-btn {
+    -fx-pref-width: 266;
+    -fx-pref-height: 800;
+    -fx-opacity: 0.5;
+    -fx-alignment: center;
+}
+
+.view-hikes-btn {
+    -fx-background-color: #DCDCDC;
+    -fx-border-width: 1;
+    -fx-border-color: black;
+}
+
+.view-hikes-btn:hover {
+    -fx-opacity: 1;
+}
+
+.new-hike-btn {
+    -fx-background-color: #DCDCDC;
+    -fx-border-width: 1;
+    -fx-border-color: black;
+}
+
+.new-hike-btn:hover {
+    -fx-opacity: 1;
+}
+
+.planned-hikes-btn {
+    -fx-background-color: #DCDCDC;
+    -fx-border-width: 1;
+    -fx-border-color: black;
+}
+
+.planned-hikes-btn:hover {
+    -fx-opacity: 1;
+}
