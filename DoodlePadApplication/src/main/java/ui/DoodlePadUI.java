@@ -20,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import shapes.Triangle;
@@ -28,24 +29,27 @@ import java.util.Random;
 
 public class DoodlePadUI extends Application{
 
+    public static final double CANVAS_INIT_WIDTH = 770;
+    public static final double CANVAS_INIT_HEIGHT = 490;
+
     private final double WINDOW_MIN_WIDTH = 800;
     private final double WINDOW_MIN_HEIGHT = 600;
     private final double WINDOW_MAX_WIDTH = 800;
     private final double WINDOW_MAX_HEIGHT = 600;
-    public static final double CANVAS_INIT_WIDTH = 770;
-    public static final double CANVAS_INIT_HEIGHT = 490;
+
+    private final int TOGGLE_BTN_SIZE = 30;
 
     private Stage primaryStage;
     private Canvas canvas;
     private SavedShapes savedShapes;
-    Random random = new Random();
-
-    private final int TOGGLE_BTN_SIZE = 30;
+    private Random random = new Random();
 
     //pollable fields
-    CheckBox fillCbx;
-    TextField thicknessEntryField;
-    Slider thicknessSlider;
+    private ToggleGroup buttonToggleGroup;
+    private ColorPicker colorDropdown;
+    private CheckBox fillCbx;
+    private TextField thicknessEntryField;
+    private Slider thicknessSlider;
 
     public DoodlePadUI() {
         savedShapes = new SavedShapes();
@@ -54,76 +58,84 @@ public class DoodlePadUI extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        setWindowProperties();
+        savedShapes.drawShapes(canvas.getGraphicsContext2D());
+        primaryStage.show();
+    }
+
+    private void setWindowProperties() {
         primaryStage.setMinWidth(WINDOW_MIN_WIDTH);
         primaryStage.setMinHeight(WINDOW_MIN_HEIGHT);
         primaryStage.setMaxWidth(WINDOW_MAX_WIDTH);
         primaryStage.setMaxHeight(WINDOW_MAX_HEIGHT);
-
         primaryStage.setTitle("DoodlePad");
         primaryStage.setScene(getScene());
-        primaryStage.show();
-
-        savedShapes.drawShapes(canvas.getGraphicsContext2D());
     }
 
-    private Scene getScene() {
+    private VBox buildWindowScene() {
         VBox window = new VBox();
-        //set paddings and such
-        window.setStyle("-fx-padding: 5;" +
-                "-fx-spacing: 10;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-color: red;");
+
+        window.getStyleClass().add("window");
         window.prefWidthProperty().bind(primaryStage.widthProperty());
         window.prefHeightProperty().bind(primaryStage.heightProperty());
 
+        return window;
+    }
 
+    private void buildToggleButtons(HBox toolbar) {
+        buttonToggleGroup = new ToggleGroup();
 
+        toolbar.getChildren().addAll(createCircleToggleBtn(),
+                createRectToggleBtn(),
+                createTriangleToggleBtn(),
+                createLineToggleButton());
+    }
 
-
-
-        HBox toolbar = new HBox();
-        toolbar.setStyle("-fx-padding: 5;" +
-                "-fx-spacing: 10;" +
-                "-fx-pref-height: 50;" +
-                "-fx-alignment: center_left;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-color: blue;");
-
-        ToggleGroup buttonToggleGroup = new ToggleGroup();
-
-        ToggleButton circleChoiceBtn = new ToggleButton("", new Circle(10, Color.GREEN));
+    private ToggleButton createCircleToggleBtn() {
+        Circle circleChoiceIcon = new Circle(10, Color.TEAL);
+        circleChoiceIcon.setStroke(Color.BLACK);
+        ToggleButton circleChoiceBtn = new ToggleButton("", circleChoiceIcon);
         circleChoiceBtn.setMinSize(TOGGLE_BTN_SIZE, TOGGLE_BTN_SIZE);
         circleChoiceBtn.setToggleGroup(buttonToggleGroup);
-
+        circleChoiceBtn.setUserData("circle");
         buttonToggleGroup.selectToggle(circleChoiceBtn);
+        return circleChoiceBtn;
+    }
 
-        ToggleButton rectangleChoiceBtn = new ToggleButton("", new Rectangle(20, 15));
+    private ToggleButton createRectToggleBtn() {
+        Rectangle rectangleChoiceIcon = new Rectangle(20, 15, Color.YELLOW);
+        rectangleChoiceIcon.setStroke(Color.BLACK);
+        ToggleButton rectangleChoiceBtn = new ToggleButton("", rectangleChoiceIcon);
         rectangleChoiceBtn.setMinSize(TOGGLE_BTN_SIZE, TOGGLE_BTN_SIZE);
         rectangleChoiceBtn.setToggleGroup(buttonToggleGroup);
+        rectangleChoiceBtn.setUserData("rectangle");
 
-        ToggleButton triangleChoiceBtn = new ToggleButton("Triangle");
+        return rectangleChoiceBtn;
+    }
+
+    private ToggleButton createTriangleToggleBtn() {
+        Polygon triangleChoiceIcon = new Polygon(
+                10.0, 0.0,
+                0.0, 15.0,
+                20.0, 15.0);
+        triangleChoiceIcon.setStroke(Color.BLACK);
+        triangleChoiceIcon.setFill(Color.LIME);
+        ToggleButton triangleChoiceBtn = new ToggleButton("", triangleChoiceIcon);
         triangleChoiceBtn.setMinSize(TOGGLE_BTN_SIZE, TOGGLE_BTN_SIZE);
         triangleChoiceBtn.setToggleGroup(buttonToggleGroup);
+        triangleChoiceBtn.setUserData("triangle");
+        return triangleChoiceBtn;
+    }
 
+    private ToggleButton createLineToggleButton() {
         ToggleButton lineChoiceBtn = new ToggleButton("", new Line(0, 0, 20, 20));
         lineChoiceBtn.setMinSize(TOGGLE_BTN_SIZE, TOGGLE_BTN_SIZE);
         lineChoiceBtn.setToggleGroup(buttonToggleGroup);
+        lineChoiceBtn.setUserData("line");
+        return lineChoiceBtn;
+    }
 
-        toolbar.getChildren().addAll(circleChoiceBtn, rectangleChoiceBtn, triangleChoiceBtn, lineChoiceBtn);
-
-
-        ColorPicker colorDropdown = new ColorPicker();
-        toolbar.getChildren().add(colorDropdown);
-
-        fillCbx = new CheckBox();
-        Label fillCbxLabel = new Label("Fill");
-
-        toolbar.getChildren().addAll(fillCbx, fillCbxLabel);
-
-
-        Label thicknessLabel = new Label("Thickness");
+    public void createThicknessTool() {
         thicknessEntryField = new TextField("1");
         thicknessEntryField.setPrefWidth(30);
 
@@ -153,14 +165,51 @@ public class DoodlePadUI extends Application{
                 // it will throw a NumberFormatException
             }
         }));
+    }
 
-        toolbar.getChildren().addAll(thicknessLabel, thicknessEntryField, thicknessSlider);
+    private Button createClearBtn() {
+        Button clear = new Button("Clear");
+        clear.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                savedShapes = new SavedShapes();
+                savedShapes.drawShapes(canvas.getGraphicsContext2D());
+            }
+        });
 
+        return clear;
+    }
+    private HBox buildToolbar() {
+        HBox toolbar = new HBox();
+        toolbar.getStyleClass().add("toolbar");
 
+        buildToggleButtons(toolbar);
 
+        colorDropdown = new ColorPicker();
 
+        fillCbx = new CheckBox();
+        Label fillCbxLabel = new Label("Fill");
 
+        Label thicknessLabel = new Label("Thickness");
+        createThicknessTool();
 
+        Button clear = createClearBtn();
+
+        toolbar.getChildren().addAll(colorDropdown,
+                fillCbx,
+                fillCbxLabel,
+                thicknessLabel,
+                thicknessEntryField,
+                thicknessSlider,
+                clear);
+
+        return toolbar;
+    }
+
+    private Scene getScene() {
+        VBox window = buildWindowScene();
+
+        HBox toolbar = buildToolbar();
 
         canvas = new Canvas(CANVAS_INIT_WIDTH, CANVAS_INIT_HEIGHT);
         canvas.setStyle("-fx-border-style: solid inside;" +
@@ -175,7 +224,10 @@ public class DoodlePadUI extends Application{
             thicknessEntryField.setText(String.valueOf((int)thicknessSlider.getValue()));
 
             IShape shape = null;
-            if(circleChoiceBtn.isSelected()) {
+
+            System.out.println(buttonToggleGroup.getSelectedToggle().getUserData());
+            String selectedToggle = (String) buttonToggleGroup.getSelectedToggle().getUserData();
+            if(selectedToggle.equals("circle")) {
                 shape = new CircleAdapter(
                         new shapes.Circle(
                                 25,
@@ -185,7 +237,7 @@ public class DoodlePadUI extends Application{
                                 colorDropdown.getValue()
                         )
                 );
-            } else if (rectangleChoiceBtn.isSelected()) {
+            } else if (selectedToggle.equals("rectangle")) {
                 shape = new RectangleAdapter(
                         new shapes.Rectangle(
                                 mouseX,
@@ -196,7 +248,7 @@ public class DoodlePadUI extends Application{
                                 colorDropdown.getValue()
                         )
                 );
-            } else if (triangleChoiceBtn.isSelected()) {
+            } else if (selectedToggle.equals("triangle")) {
                 shape = new TriangleAdapter(
                         new Triangle(
                                 mouseX,
@@ -207,7 +259,7 @@ public class DoodlePadUI extends Application{
                                 colorDropdown.getValue()
                         )
                 );
-            } else if (lineChoiceBtn.isSelected()) {
+            } else if (selectedToggle.equals("line")) {
                 int randomXEnd = random.nextInt((int)CANVAS_INIT_WIDTH -1);
                 int randomYEnd = random.nextInt((int)CANVAS_INIT_HEIGHT -1);
 
@@ -230,7 +282,9 @@ public class DoodlePadUI extends Application{
 
         window.getChildren().addAll(toolbar, canvas);
 
-        return new Scene(window, primaryStage.getWidth(), primaryStage.getHeight());
+        Scene mainScene = new Scene(window, primaryStage.getWidth(), primaryStage.getHeight());
+        mainScene.getStylesheets().add("main.css");
+        return mainScene;
     }
 
     private void addAndDrawShape(IShape shape) {
